@@ -1,8 +1,19 @@
 # Installation
 npm init
 npm install typescript ts-node @types/node --save-dev
+npm i express
+npm install typescript ts-node @types/node @types/express --save-dev  (--save-dev Only for development enviroment).
+
 npm run build
 npm start
+
+For local development
+npm run dev
+
+For Production
+npm run start
+
+
 
 # Git, Github & Collaboration
 
@@ -25,3 +36,14 @@ git status
 # How to collaboration
 1. github > settings > collaborators
 2. manage access - username / email / name
+
+
+# How to start project
+
+1. git clone
+2. For backend 
+    - npm install
+    - npm run build
+    - npm start
+
+
