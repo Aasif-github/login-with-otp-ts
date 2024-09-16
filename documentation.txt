@@ -1,4 +1,27 @@
+# Installation
 npm init
-
-
 npm install typescript ts-node @types/node --save-dev
+npm run build
+npm start
+
+# Git, Github & Collaboration
+
+Github
+1. Create Repo (ex. login-with-otp-ts)
+2. save
+
+git(> terminal)
+1. git init
+2. git add .
+3. git commit -m "comment"
+
+- option -
+git branch -M main
+git status
+
+4. git remote add origin https://github.com/Aasif-github/login-with-otp-ts.git
+5. git push -u origin main
+
+# How to collaboration
+1. github > settings > collaborators
+2. manage access - username / email / name
