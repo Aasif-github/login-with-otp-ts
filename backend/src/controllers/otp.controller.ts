@@ -1,17 +1,23 @@
 import OtpModel from "../models/otp.model";
+import otpGenerator from "otp-generator";
+
+import { ReturnResponse } from "../utils/interfaces";
 
 import { Request, Response, NextFunction } from "express";
 
 const generateOtp = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
-        // Generate a random OTP (assuming 6-digit OTP)
-        const otp = Math.floor(100000 + Math.random() * 900000); // Generates a 6-digit OTP
+        let resp: ReturnResponse;
+        let { phone_number } = req.body;
+        let otp = otpGenerator.generate(6, { upperCaseAlphabets: false, lowerCaseAlphabets:false,specialChars: false });
+        // Save the OTP to the database
+        await OtpModel.create({ phone_number, otp });   
         
         // Structure the response
-        const resp = {
+         resp = {
             status: "success",
             message: "OTP sent successfully. Please verify your account.",
-            data: { otp } // Include OTP in the response if needed
+            data: { phone_number,otp } // Include OTP in the response if needed
         };
 
         // Send the response with status 200

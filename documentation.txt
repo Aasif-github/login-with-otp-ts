@@ -58,6 +58,9 @@ doc: https://github.com/microsoft/TypeScript-Node-Starter
     - npm start
 
 ------------------------------------------------------------------------------------
+npm i --save-dev @types/otp-generator
+
+
 POST
 localhost:3000/v1/send-otp
 
