@@ -61,16 +61,22 @@ doc: https://github.com/microsoft/TypeScript-Node-Starter
 npm i --save-dev @types/otp-generator
 
 
+
+
+------------------------------------------------------------------------------------
 POST
 localhost:3000/v1/send-otp
-
+Body - json
 {
-    "status": "success",
-    "message": "OTP sent successfully. Please verify your account.",
-    "data": {
-        "otp": 701634
-    }
+    "phone_number":"8989119911"
 }
 ------------------------------------------------------------------------------------
+POST
+localhost:3000/v1/verify-otp
+Body - json
+{
+    "otp":"448587"
+}
+
 
 https://www.fey.com/
