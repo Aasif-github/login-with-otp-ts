@@ -47,3 +47,27 @@ git status
     - npm start
 
 
+doc: https://github.com/microsoft/TypeScript-Node-Starter
+
+# How to start project
+
+1. git clone
+2. For backend 
+    - npm install
+    - npm run build
+    - npm start
+
+------------------------------------------------------------------------------------
+POST
+localhost:3000/v1/send-otp
+
+{
+    "status": "success",
+    "message": "OTP sent successfully. Please verify your account.",
+    "data": {
+        "otp": 701634
+    }
+}
+------------------------------------------------------------------------------------
+
+https://www.fey.com/
