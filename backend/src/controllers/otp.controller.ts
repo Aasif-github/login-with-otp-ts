@@ -48,25 +48,32 @@ const verifyOtp = async (req: Request, res: Response, next: NextFunction): Promi
         const { otp } = req.body;
 
         // Fetch the signed cookie
-        const phoneNumber = req.cookies.phoneNumber_;
-
+        const phoneNumber = Number(req.cookies.phoneNumber_.phone_number);
+        
+        console.log(req.cookies.phoneNumber_.phone_number);
+        console.log('type',typeof phoneNumber);
         if (!phoneNumber) {
             return res.status(400).json({ message: 'Phone number not found in cookies or expired' });
         }
 
         // Retrieve and verify the OTP from the database (omitted for brevity)
-        const isValid = OtpModel.find({ phone_number: phoneNumber, otp });
-        
-        if (!isValid) {
-            return res.status(400).json({ message: 'Invalid OTP' });
-        }
+        //fetch last otp
+        const latest_otp = await OtpModel.find({ phone_number: phoneNumber }).sort({ createdAt: -1 }).limit(1);
 
-        resp = {
-            status: "success",
-            message: "OTP verified successfully",
-            data: { phone_number: phoneNumber }
-        };
-        res.status(200).send(resp);
+        console.log('latest otp', latest_otp);
+        console.log('old',otp);
+
+        if (latest_otp != otp) {
+            return res.status(400).json({ message: 'Invalid OTP' });
+        }else{
+            resp = {
+                status: "success",
+                message: "OTP verified successfully",
+                data: { phone_number: phoneNumber }
+            };
+            res.status(200).send(resp);
+        }
+        
     }catch(err){
         console.error(err);
         next(err);
