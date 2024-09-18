@@ -1,5 +1,6 @@
 import OtpModel from "../models/otp.model";
 import otpGenerator from "otp-generator";
+import twilio from "twilio";
 
 import { ReturnResponse } from "../utils/interfaces";
 
@@ -8,8 +9,19 @@ import { Request, Response, NextFunction } from "express";
 const generateOtp = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
         let resp: ReturnResponse;
+        
+        // Retrieve and verify the OTP from the database (omitted for brevity)
         let { phone_number } = req.body;
-        let otp = otpGenerator.generate(6, { upperCaseAlphabets: false, lowerCaseAlphabets:false,specialChars: false });
+        
+        if (!phone_number) {
+            res.status(400).send({ status: 'error', message: 'Phone number is required' });
+            return;
+        }
+
+        // Generate a 6-digit OTP
+        let otp: string = otpGenerator.generate(6, { upperCaseAlphabets: false, lowerCaseAlphabets:false,specialChars: false });
+        
+        // Store the OTP in the database
         let phoneNumber_ = { phone_number };
 
         // Route to set a cookie    
@@ -20,21 +32,59 @@ const generateOtp = async (req: Request, res: Response, next: NextFunction): Pro
             // sameSite: 'Strict',          // Controls whether cookies are sent with cross-site requests            
         });
 
-       console.log('cookie set');
+        console.log('cookie set');
 
-        // Save the OTP to the database
-        await OtpModel.create({ phone_number, otp });   
+        let recivers_number = phone_number;
+
+        /*
+         // Fetch Twilio credentials from environment variables
+        const accountSid = process.env.TWILIO_ACCOUNT_SID;
+        const authToken = process.env.TWILIO_AUTH_TOKEN;
+        const twilioPhoneNumber = process.env.TWILIO_PHONE_NUMBER;
         
-        // Structure the response
-         resp = {
+        console.log(accountSid, authToken, twilioPhoneNumber, recivers_number);
+
+        if (!accountSid || !authToken || !twilioPhoneNumber) {
+            throw new Error("Twilio credentials are missing");
+        }
+
+        // Create a Twilio client
+        const client = twilio(accountSid, authToken);
+
+        // Function to send an OTP SMS
+        const sendOtp = (recivers_number:string, otp:string) => {
+            client.messages
+                .create({
+                    body: `Your OTP is: ${otp}`,
+                    from: '+917428617524', // Your Twilio phone number
+                    to: '+918368648276' // The phone number you want to send the message to
+                })
+                .then(message => {
+                    console.log(`Message sent with SID: ${message.sid}`);
+                    console.log(message.body);
+                    // Structure the response                
+                })
+                .catch(err => {
+                    console.error("Failed to send SMS:", err);
+                });
+        };
+        */
+       
+        resp = {
             status: "success",
             message: "OTP sent successfully. Please verify your account.",
             data: { phone_number, otp } // Include OTP in the response if needed
         };
 
         // Send the response with status 200
-        res.status(200).send(resp);
-    } catch (err) {
+        res.status(200).send(resp);                    
+        
+        // await sendOtp(phone_number, otp);
+        // Save the OTP to the database
+
+        await OtpModel.create({ phone_number, otp });   
+        
+        } catch (err) {
         console.error(err);
         next(err); // Pass error to the next middleware (error handler)
     }
