@@ -1,11 +1,12 @@
 import mongoose, { connection } from "mongoose";
 
-const DB_NAME:string = `OTP-LOGIN`;
+const DB_NAME:string = ``;
 
 const db_connection = async (): Promise<typeof mongoose | void> => {
     
     try{
-        const connection =  await mongoose.connect(`mongodb://localhost:27017/${DB_NAME}`);
+        const connection = await mongoose.connect(process.env.MONGO_URI as string);
+
         console.log('Database connected successfully');
         return connection;
         
