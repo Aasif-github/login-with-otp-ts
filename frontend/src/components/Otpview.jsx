@@ -41,7 +41,7 @@ const Otpview = () => {
   return (
     <div className="flex justify-center items-center h-screen bg-gray-100">
       <div className="bg-white w-[400px] p-8 rounded-lg shadow-lg max-w-md">
-        <h2 className="text-2xl font-bold mb-6 text-center">Enter OTP</h2>
+        <h2 className="text-2xl font-bold mb-6 text-center">Verify OTP</h2>
         <form onSubmit={handleSubmit} className="space-y-6">
           <div>
             <label htmlFor="otp" className="block text-sm font-medium text-gray-700">
@@ -63,7 +63,7 @@ const Otpview = () => {
             className="w-full py-2 px-4 bg-indigo-500 text-white rounded-lg hover:bg-indigo-600 focus:ring-2 focus:ring-indigo-500 focus:ring-opacity-50"
             disabled={count === 0} // Disable button if countdown is 0
           >
-            Submit OTP
+           Verify
           </button>
         </form>
 
